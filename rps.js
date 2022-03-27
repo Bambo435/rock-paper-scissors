@@ -14,51 +14,109 @@ function computerChoice() {
     }
 };
 
-computerChoice();
 
+
+function roundAnnouncer(roundOutcome){
+    if (roundOutcome === 'draw'){
+    textMaker(`It's a draw. Number of player wins : ${playerCount}. Number of computer wins: ${computerCount}.` )
+    } else if (roundOutcome === 'win') {
+    textMaker(`You won this round. Number of player wins : ${playerCount}. Number of computer wins: ${computerCount}.`);
+    } else {
+    textMaker(`You lost this round. Number of player wins : ${playerCount}. Number of computer wins: ${computerCount}.`);    
+    }
+};
 // playRound function. A winner is decided depending on the input from player and computer.
 
-function playRound() {
-    var playerInput = (prompt('Rock, paper or scissors?')).toLowerCase();
-    console.log(`You picked ${playerInput}.`)
-    console.log(`Computer picked ${computerNumber}.`);
-    playerWins = true;
+function playRound(playerInput) {
+    var playerInput;
+    computerChoice();
     if (playerInput === computerNumber) {
-        console.log("It's a draw!");
-        playerWins = 0;
+        roundAnnouncer('draw');
+        gameCheck();
     } else if 
         (playerInput === 'rock' && computerNumber === 'paper') {
-        console.log("You lose!"); 
-        playerWins = false;   
+        computerCount += 1;    
+        roundAnnouncer('lose');
+        gameCheck();
     } else if 
         (playerInput === 'rock' && computerNumber === 'scissors') {
-         console.log("You win!");   
-         playerWins = true;
+        playerCount += 1;    
+        roundAnnouncer('win');
+        gameCheck();
     } else if 
         (playerInput === 'paper' && computerNumber === 'rock') {
-         console.log("You win!"); 
-         playerWins = true;
+        playerCount += 1;    
+        roundAnnouncer('win');
+        gameCheck();
     } else if 
         (playerInput === 'paper' && computerNumber === 'scissors') {
-         console.log("You lose!"); 
-         playerWins = false;
+        computerCount += 1;    
+        roundAnnouncer('lose');
+        gameCheck();
     } else if 
         (playerInput === 'scissors' && computerNumber === 'paper') {
-         console.log("You win!"); 
-         playerWins = true;
+        playerCount += 1;    
+        roundAnnouncer('win');
+        gameCheck();
     } else {
-         console.log("You lose!");     
-         playerWins = false;
+        computerCount += 1;    
+        roundAnnouncer('lose');
+        gameCheck();
     }
 };
 
+
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
+
+
+rock.addEventListener('click', function() {
+    playRound('rock')
+});
+paper.addEventListener('click', function() {
+    playRound('paper') 
+});
+scissors.addEventListener('click', function() {
+    playRound('scissors') 
+});
+
+function textMaker(textInput) {
+    const container = document.querySelector('#container');
+    const text = document.createElement('div');
+    text.classList.add('content'); 
+    text.textContent = textInput;
+    container.appendChild(text); 
+};
+
+
+let playerCount = 0;
+let computerCount = 0;
+
+
+function gameCheck() {
+if (playerCount === 5) {
+    textMaker('You win the game!');
+    playerCount = 0;
+    computerCount = 0;
+} else if (computerCount === 5 ) {
+    textMaker('You lost the game!');
+    playerCount = 0;
+    computerCount = 0;
+} else {
+    textMaker('Player has ' + (5 - playerCount) + ' points left to score. Computer has ' + (5- computerCount) + ' points left to score.')
+}
+};
+
+
+
 //  game Function. This function will launch 5 instances of playRound in a loop and a score is tracked. The winner is announced at the end of the loop.
 
-function game() {
+/* function game() {
     let playerCount = 0;
     let computerCount = 0;
     for (let i = 0; i < 5; i++) {
-      playRound()  
+      textMaker('')
       if (playerWins === true) {
         playerCount += 1;
         console.log(`Player has won ${playerCount} times. Computer has won ${computerCount} times.`);
@@ -77,6 +135,6 @@ function game() {
     } else {
         console.log('You lost the game!');
     }
-    };
+    }; 
 
-game();
+game(); */
